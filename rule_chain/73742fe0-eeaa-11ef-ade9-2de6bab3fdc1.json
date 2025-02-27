@@ -54,7 +54,7 @@
       "type" : "True"
     }, {
       "fromIndex" : 8,
-      "toIndex" : 9,
+      "toIndex" : 12,
       "type" : "Success"
     }, {
       "fromIndex" : 9,
@@ -64,6 +64,10 @@
       "fromIndex" : 10,
       "toIndex" : 11,
       "type" : "True"
+    }, {
+      "fromIndex" : 12,
+      "toIndex" : 9,
+      "type" : "Success"
     } ],
     "firstNodeIndex" : 0,
     "nodes" : [ {
@@ -356,19 +360,19 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 596,
-        "layoutY" : 509
+        "layoutX" : 830,
+        "layoutY" : 154
       },
       "configuration" : {
         "scriptLang" : "TBEL",
         "jsScript" : "return {msg: msg, metadata: metadata, msgType: msgType};",
-        "tbelScript" : "var newMsg = {};\r\nif (msg.sumAWLR < 180 && metadata.deviceName == 'testing v5') {\r\n    newMsg.method = 'setPumpAutoMode';\r\n    newMsg.params = 'true';\r\n}\r\nelse if (msg.sumAWLR > 340 && metadata.deviceName == 'testing v5') {\r\n    newMsg.method = 'setPumpAutoMode';\r\n    newMsg.params = 'false';\r\n}\r\nif (newMsg.method == 'setPumpAutoMode') {\r\n    msgType = 'RPC message';\r\n}\r\nreturn {\r\n    msg: newMsg,\r\n    metadata: metadata,\r\n    msgType: msgType\r\n};"
+        "tbelScript" : "var newMsg = {};\r\nif (msg.sumAWLR < metadata.ss_awlrBottomThreshold &&\r\n    metadata\r\n    .deviceName == 'testing v5') {\r\n    newMsg.method = 'setPumpAutoMode';\r\n    newMsg.params = 'true';\r\n} else if (msg.sumAWLR > metadata.ss_awlrTopThreshold &&\r\n    metadata.deviceName == 'testing v5') {\r\n    newMsg.method = 'setPumpAutoMode';\r\n    newMsg.params = 'false';\r\n}\r\nif (newMsg.method == 'setPumpAutoMode') {\r\n    msgType = 'RPC message';\r\n}\r\nreturn {\r\n    msg: newMsg,\r\n    metadata: metadata,\r\n    msgType: msgType\r\n};"
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1740025270048,
+        "allEnabledUntil" : 1740132520988,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -384,8 +388,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 833,
-        "layoutY" : 155
+        "layoutX" : 844,
+        "layoutY" : 244
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -412,8 +416,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 832,
-        "layoutY" : 247
+        "layoutX" : 847,
+        "layoutY" : 338
       },
       "configuration" : {
         "timeoutInSeconds" : 60
@@ -435,6 +439,38 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 597,
+        "layoutY" : 509
+      },
+      "configuration" : {
+        "tellFailureIfAbsent" : true,
+        "fetchTo" : "METADATA",
+        "clientAttributeNames" : [ ],
+        "latestTsKeyNames" : [ ],
+        "serverAttributeNames" : [ "awlrTopThreshold", "awlrBottomThreshold" ],
+        "sharedAttributeNames" : [ ],
+        "getLatestValueWithTs" : false
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1740132520988,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "bad1f9e0-f039-11ef-ade9-2de6bab3fdc1"
+      },
+      "name" : "Extract AWLR Threshold",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.metadata.TbGetAttributesNode"
     } ],
     "ruleChainConnections" : null
   },
